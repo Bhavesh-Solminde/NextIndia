@@ -1,5 +1,5 @@
 ---
-description: 
+description: Scaffolds the initial MERN monorepo structure with backend and frontend folders
 ---
 
 # Workflow: Scaffold MERN Monorepo Boilerplate
@@ -10,7 +10,7 @@ Execute the following steps sequentially to scaffold the base workspace architec
 1. Create the `backend/` directory. Initialize a `package.json` and a strict `tsconfig.json`.
 2. Install the necessary dependencies for a TypeScript Express server (e.g., `express`, `mongoose`, `cors`, `dotenv`, and their corresponding `@types`).
 3. Scaffold the exact file and folder structure below:
-   - `backend/src/modules/` (For feature-based architecture: controllers, models, routes)
+   - `backend/src/mxodules/` (For feature-based architecture: controllers, models, routes)
    - `backend/src/shared/` (For global middlewares, utilities, and generic types)
    - `backend/src/app.ts` (Express app configuration and middleware setup)
    - `backend/src/server.ts` (Entry point: DB connection and server listener)
