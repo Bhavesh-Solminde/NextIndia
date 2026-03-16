@@ -7,9 +7,9 @@
   <img src="https://img.shields.io/badge/Gemini-2.0_Flash-8E75B2?logo=google" />
 </p>
 
-# DevProxy — API & Webhook Debugger
+# NextIndia — API & Webhook Debugger
 
-A real-time **API traffic interceptor** and **webhook debugger** built for developers integrating payment gateways (Stripe, Razorpay, PayPal, etc.). Think of it as a self-hosted Proxyman/Webhooksite with a built-in AI debugger powered by **Google Gemini**.
+A real-time **API traffic interceptor** and **webhook debugger** built for developers integrating payment gateways (Stripe, Razorpay, PayPal, etc.). Think of it as a self-hosted Proxyman/Webhooksite with built-in AI debugging and **CodeRabbit-style code reviews** powered by **Google Gemini 2.5 Flash**.
 
 ---
 
@@ -41,10 +41,11 @@ A real-time **API traffic interceptor** and **webhook debugger** built for devel
 | **Webhook Interception** | Capture incoming webhooks from Stripe, Razorpay, PayPal, etc. Forward them to your local backend and log every detail. |
 | **Automatic HTTP Capture** | Monkey-patches Node's `http.request` / `https.request` to silently log **every outgoing HTTP call** your backend makes. |
 | **Manual API Dispatch** | Fire custom API requests (GET/POST/PUT/DELETE) via a slide-over drawer form and see the full response. |
-| **AI Debugger** | One-click AI analysis of any failed request — streams a real-time diagnosis from **Google Gemini 2.0 Flash** with markdown + syntax-highlighted code suggestions. |
-| **Real-Time Dashboard** | All events appear instantly via **Socket.io** — no polling, no refresh. |
+| **AI Debugger** | One-click AI analysis of any failed request — streams a real-time diagnosis from **Google Gemini 2.5 Flash** with markdown + syntax-highlighted code suggestions + a one-click prompt copy button. |
+| **Strict AI Code Review** | CodeRabbit-style strict AI code review analyzing the target URL response. |
+| **Real-Time Dashboard** | All events appear instantly via a **Singleton Socket.io** connection — no polling, no refresh. |
 | **Replay & Delete** | Replay any logged webhook or API request, or delete it from the log. |
-| **Smart Filtering** | Filter by source/service, error-only mode, configurable result limit. |
+| **Smart Filtering & Badges** | Filter by source/service, error-only mode, configurable result limit. Differentiates `AUTO` intercepts from `MANUAL` dispatches via UI badges. |
 | **Light / Dark Mode** | Full theme toggle with localStorage persistence. |
 
 ---
@@ -106,7 +107,7 @@ A real-time **API traffic interceptor** and **webhook debugger** built for devel
 | **MongoDB + Mongoose** | Persistent storage for all intercepted events |
 | **Socket.io** | Real-time event broadcasting to clients |
 | **Axios** | Forwarding webhooks to upstream backends |
-| **@google/generative-ai** | Gemini 2.0 Flash for AI-powered debugging |
+| **@google/generative-ai** | Gemini 2.5 Flash (preview-04-17) for AI-powered debugging and strict code reviews |
 | **uuid** | Unique ID generation for each event |
 
 ### Frontend
@@ -145,9 +146,12 @@ devproxy/
 │   │   │   │   ├── api-requests.model.ts       # IApiRequest schema (+ source field)
 │   │   │   │   ├── api-requests.controller.ts  # Proxy, list, replay, delete
 │   │   │   │   └── api-requests.routes.ts      # Route definitions
-│   │   │   └── ai-debug/
-│   │   │       ├── ai-debug.controller.ts  # Prompt generation + Gemini SSE stream
-│   │   │       └── ai-debug.routes.ts      # /prompt and /stream routes
+│   │   │   ├── ai-debug/
+│   │   │   │   ├── ai-debug.controller.ts  # Prompt generation + Gemini SSE stream
+│   │   │   │   └── ai-debug.routes.ts      # /prompt and /stream routes
+│   │   │   └── code-review/
+│   │   │       ├── code-review.controller.ts # Strict CodeRabbit-style review via Gemini
+│   │   │       └── code-review.routes.ts     # Route definitions
 │   │   └── shared/
 │   │       ├── socket.ts              # Socket.io initialization
 │   │       ├── parseSource.ts         # Source/service detection utility
@@ -334,10 +338,11 @@ The request is proxied through DevProxy, which logs the full request/response cy
 
 When you select a failed event (4xx/5xx status), click the **"AI Debug"** button to trigger a real-time analysis:
 
-1. DevProxy constructs a structured prompt with the event's method, URL, headers, payload, response status, and response body
-2. Sends it to **Google Gemini 2.0 Flash** via the `@google/generative-ai` SDK
+1. DevProxy constructs a strict, highly structured prompt with the event's method, URL, headers, payload, response status, and response body
+2. Sends it to **Google Gemini 2.5 Flash** (`gemini-2.5-flash-preview-04-17`) via the `@google/generative-ai` SDK
 3. **Streams** the response back to the frontend using **Server-Sent Events (SSE)**
 4. The frontend renders the response in real-time as **rich markdown** with syntax-highlighted code blocks
+5. You can also easily copy the exact internal prompt used using the **Copy Prompt** button in the modal header.
 
 The modal shows:
 - A **context summary** bar (method, URL, status code)
@@ -469,6 +474,3 @@ npm run lint     # Run ESLint
 <p align="center">
   <sub>Built with ❤️ using TypeScript, React, Express, MongoDB, Socket.io, and Google Gemini.</sub>
 </p>
-# NextIndia
-# NextIndia
-# NextIndia
