@@ -469,3 +469,4 @@ npm run lint     # Run ESLint
 <p align="center">
   <sub>Built with ❤️ using TypeScript, React, Express, MongoDB, Socket.io, and Google Gemini.</sub>
 </p>
+# NextIndia
