@@ -10,13 +10,19 @@ import codeReviewRoutes from './modules/code-review/code-review.routes';
 const app: Application = express();
 
 // Middlewares
-app.use(
-  cors({
-    origin: ENV.FRONTEND_ORIGIN,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (Razorpay webhooks, curl, etc.)
+    if (!origin) return callback(null, true);
+    return callback(null, true); // Allow all for now
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-razorpay-signature'],
+}));
+// Raw body for webhook signature verification — must be before express.json()
+app.use('/api/webhooks', express.raw({ type: 'application/json' }));
+
+// Your existing line stays below
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

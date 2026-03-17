@@ -15,3 +15,4 @@ export default defineConfig({
     strictPort: true,
   },
 });
+// Trigger Vite dev server restart

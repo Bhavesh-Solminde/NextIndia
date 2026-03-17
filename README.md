@@ -40,7 +40,8 @@ A real-time **API traffic interceptor** and **webhook debugger** built for devel
 |---|---|
 | **Webhook Interception** | Capture incoming webhooks from Stripe, Razorpay, PayPal, etc. Forward them to your local backend and log every detail. |
 | **Automatic HTTP Capture** | Monkey-patches Node's `http.request` / `https.request` to silently log **every outgoing HTTP call** your backend makes. |
-| **Manual API Dispatch** | Fire custom API requests (GET/POST/PUT/DELETE) via a slide-over drawer form and see the full response. |
+| **Manual API Dispatch** | Fire custom API requests (GET/POST/PUT/DELETE) via a modal dialog and see the full response. |
+| **Modern Landing Page** | Features an immersive 3D scroll animation, dynamic gallery, and responsive design built with Aceternity UI and Framer Motion. |
 | **AI Debugger** | One-click AI analysis of any failed request — streams a real-time diagnosis from **Google Gemini 2.5 Flash** with markdown + syntax-highlighted code suggestions + a one-click prompt copy button. |
 | **Strict AI Code Review** | CodeRabbit-style strict AI code review analyzing the target URL response. |
 | **Real-Time Dashboard** | All events appear instantly via a **Singleton Socket.io** connection — no polling, no refresh. |
@@ -82,13 +83,13 @@ A real-time **API traffic interceptor** and **webhook debugger** built for devel
 │                        DevProxy Frontend                            │
 │                                                                     │
 │  ┌─────────┐  ┌───────────┐  ┌──────────────┐  ┌───────────────┐  │
-│  │ Navbar   │  │ StatsSummary│ │ EventList    │  │ EventDetail   │  │
-│  │ (Theme)  │  │            │  │ (EventCards) │  │ Panel         │  │
+│  │ Landing  │  │ Dashboard  │  │ EventList    │  │ EventDetail   │  │
+│  │ Page     │  │ (Stats)    │  │ (EventCards) │  │ Panel         │  │
 │  └─────────┘  └───────────┘  └──────────────┘  └───────────────┘  │
 │                                                                     │
 │  ┌──────────────────┐  ┌────────────────────────────────────────┐  │
 │  │ ManualDispatch    │  │ DebugPromptModal (Gemini AI Stream)   │  │
-│  │ Drawer            │  │                                        │  │
+│  │ Dialog            │  │                                        │  │
 │  └──────────────────┘  └────────────────────────────────────────┘  │
 │                                                                     │
 │  State: Zustand stores (webhookStore, apiRequestStore, uiStore)    │
@@ -116,6 +117,8 @@ A real-time **API traffic interceptor** and **webhook debugger** built for devel
 | **React 19 + Vite** | UI framework & dev server |
 | **TypeScript** | Strict component typing |
 | **TailwindCSS v4** | Utility-first styling with dark mode |
+| **shadcn/ui & Aceternity** | Reusable, highly customizable UI components |
+| **Framer Motion** | Fluid animations (e.g., 3D container scroll, text shimmer) |
 | **Zustand** | Lightweight global state management |
 | **Socket.io Client** | Real-time event subscription |
 | **react-markdown + remark-gfm** | Rendering AI analysis as rich markdown |
@@ -168,11 +171,14 @@ devproxy/
 │   │   ├── App.tsx                    # Router + ThemeProvider + Toaster
 │   │   ├── index.css                  # Theme CSS variables + scrollbar
 │   │   ├── pages/
+│   │   │   ├── LandingPage.tsx        # Hero section with 3D scroll and features
 │   │   │   ├── DashboardPage.tsx      # Main layout (stats + filters + list + detail)
 │   │   │   └── NotFoundPage.tsx       # 404 page
 │   │   ├── layouts/
 │   │   │   └── DashboardLayout.tsx    # Navbar + Outlet + DebugPromptModal
 │   │   ├── components/
+│   │   │   ├── ui/                    # shadcn and Aceternity components (Dialog, ContainerScroll, TextShimmer)
+│   │   │   ├── blocks/                # Block components (Gallery6)
 │   │   │   ├── Navbar.tsx             # Logo, tab switcher, theme toggle
 │   │   │   ├── ConnectionStatus.tsx   # Socket.io online/offline indicator
 │   │   │   ├── StatsSummary.tsx       # Stats cards (total, errors, latency)
@@ -182,7 +188,7 @@ devproxy/
 │   │   │   ├── EventDetailPanel.tsx   # Full event inspector (headers, payload, actions)
 │   │   │   ├── JsonViewer.tsx         # Syntax-highlighted JSON (theme-aware)
 │   │   │   ├── DebugPromptModal.tsx   # AI analysis modal (SSE + markdown)
-│   │   │   ├── ManualDispatchDrawer.tsx # Slide-over drawer for manual requests
+│   │   │   ├── ManualDispatchDialog.tsx # Modal dialog for manual API dispatch
 │   │   │   ├── ProxyRequestForm.tsx   # Manual dispatch form (method, URL, headers, body)
 │   │   │   ├── SourceIcon.tsx         # Service icon resolver
 │   │   │   ├── StatusBadge.tsx        # HTTP status badge
@@ -322,7 +328,7 @@ Each auto-captured event is tagged with `source: "auto"` and displays a grey **A
 
 ### 3. Manual API Dispatch
 
-Click the **"+ Manual Dispatch"** button in the filter bar to open a slide-over drawer. From there you can:
+Click the **"+ Manual Dispatch"** button in the filter bar to open a dialog. From there you can:
 
 - Select **HTTP method** (GET, POST, PUT, DELETE, PATCH)
 - Enter the **target URL**
@@ -439,11 +445,12 @@ Both accept: `{ "type": "webhook" | "api_request", "eventId": "uuid" }`
 
 | Component | Description |
 |---|---|
+| `LandingPage` | Immersive hero section, 3D scroll, feature gallery |
 | `DashboardPage` | Main page — assembles stats, filters, event list, detail panel |
 | `EventCard` | Compact card for each event (source icon, URL, status, badges) |
 | `EventDetailPanel` | Full event inspector with headers, payload, action buttons |
 | `DebugPromptModal` | AI analysis modal with SSE streaming + markdown rendering |
-| `ManualDispatchDrawer` | Slide-over form for manual API dispatch |
+| `ManualDispatchDialog` | Modal dialog for manual API dispatch |
 | `JsonViewer` | Theme-aware JSON display with syntax highlighting and copy |
 | `FilterBar` | Search, error filter, limit, and "+ Manual Dispatch" button |
 | `StatsSummary` | Total events, error rate, avg latency, last event time |

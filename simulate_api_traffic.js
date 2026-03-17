@@ -302,7 +302,7 @@ app.post('/simulate/:service', async (req, res) => {
 
 // Fire a burst of requests (default 5)
 app.post('/simulate-burst', async (req, res) => {
-  const count = Math.min(parseInt(req.body.count) || 5, 20); // cap at 20
+  const count = Math.min(parseInt(req.body?.count) || 5, 20); // cap at 20
   const results = [];
   const errors = [];
 
@@ -328,7 +328,7 @@ app.post('/simulate-burst', async (req, res) => {
 
 // Start continuous auto-simulation
 app.post('/simulate-auto/start', (req, res) => {
-  const intervalMs = Math.max(parseInt(req.body.interval) || 3000, 1000); // min 1s
+  const intervalMs = Math.max(parseInt(req.body?.interval) || 3000, 1000); // min 1s
   const started = startAutoSimulation(intervalMs);
 
   if (started) {

@@ -34,7 +34,7 @@ export function Navbar() {
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-50'
             )}
           >
-            Intercept
+            WebHook Debugger
             {activeTab === 'webhook' && (
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 dark:bg-slate-50 rounded-t-md" />
             )}
@@ -48,7 +48,7 @@ export function Navbar() {
                 : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-50'
             )}
           >
-            API Logs
+            API Debugger
             {activeTab === 'api_request' && (
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-900 dark:bg-slate-50 rounded-t-md" />
             )}

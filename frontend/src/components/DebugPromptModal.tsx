@@ -6,6 +6,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { X, RefreshCw, Sparkles, Code2, ArrowRight, Check, Copy } from 'lucide-react';
 import type { WebhookEvent, ApiRequest } from '../types';
+import { TextShimmer } from './ui/text-shimmer';
 
 export function DebugPromptModal() {
   const { event, eventType, isOpen, close } = useDebugPrompt();
@@ -200,13 +201,16 @@ export function DebugPromptModal() {
           className="flex-1 overflow-y-auto custom-scrollbar p-6 bg-white dark:bg-[#1a1a1a]"
         >
           {loading && !response && (
-            <div className="flex flex-col items-center justify-center py-12 gap-3">
+            <div className="flex flex-col items-center justify-center py-12 gap-5">
               <div className="relative">
                 <div className="w-10 h-10 border-2 border-slate-200 dark:border-white/10 border-t-amber-500 rounded-full animate-spin" />
               </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+              <TextShimmer
+                duration={1.2}
+                className="text-sm font-medium [--base-color:theme(colors.slate.500)] [--base-gradient-color:white] dark:[--base-color:theme(colors.slate.400)] dark:[--base-gradient-color:white]"
+              >
                 Analyzing request with AI...
-              </p>
+              </TextShimmer>
             </div>
           )}
 

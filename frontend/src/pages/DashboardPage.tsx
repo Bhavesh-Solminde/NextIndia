@@ -7,7 +7,7 @@ import { StatsSummary } from '../components/StatsSummary';
 import { FilterBar } from '../components/FilterBar';
 import { EventList } from '../components/EventList';
 import { EventDetailPanel } from '../components/EventDetailPanel';
-import { ManualDispatchDrawer } from '../components/ManualDispatchDrawer';
+import { ManualDispatchDialog } from '../components/ManualDispatchDialog';
 
 export function DashboardPage() {
   const activeTab = useUiStore((state) => state.activeTab);
@@ -78,8 +78,8 @@ export function DashboardPage() {
 
       </div>
 
-      {/* Manual Dispatch Drawer */}
-      <ManualDispatchDrawer
+      {/* Manual Dispatch Dialog */}
+      <ManualDispatchDialog
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />

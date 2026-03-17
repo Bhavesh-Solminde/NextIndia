@@ -16,10 +16,17 @@ import { ENV } from '../../env';
  */
 export const interceptWebhook = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    // Handle raw body from express.raw() middleware
+    const rawBody = req.body instanceof Buffer
+      ? req.body.toString('utf8')
+      : JSON.stringify(req.body);
+
+    const body = JSON.parse(rawBody) as Record<string, unknown>;
+
     const { source, eventType } = parseSource(
       req.params.source ?? req.originalUrl,
       req.headers,
-      req.body
+      body
     );
     const startTime = Date.now();
 
@@ -38,7 +45,7 @@ export const interceptWebhook = asyncHandler(
             ([key, val]) => key.toLowerCase() !== 'host' && val !== undefined
           )
         ) as Record<string, string>,
-        data: req.body as Record<string, unknown>,
+        data: body,
         validateStatus: () => true, // Accept all statuses — don't throw on 4xx/5xx
       };
 
@@ -63,7 +70,7 @@ export const interceptWebhook = asyncHandler(
       method: req.method,
       url: req.originalUrl,
       headers: (req.headers ?? {}) as Record<string, string>,
-      payload: (req.body ?? {}) as Record<string, unknown>,
+      payload: body,
       status: responseStatus,
       responseTime,
       timestamp: new Date(),

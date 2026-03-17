@@ -3,11 +3,16 @@ import { Toaster } from 'react-hot-toast';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { DashboardPage } from './pages/DashboardPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import LandingPage from './pages/LandingPage';
 import { ThemeProvider, useTheme } from './hooks/ThemeContext';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <LandingPage />,
+  },
+  {
+    path: '/dashboard',
     element: <DashboardLayout />,
     children: [
       { index: true, element: <DashboardPage /> },

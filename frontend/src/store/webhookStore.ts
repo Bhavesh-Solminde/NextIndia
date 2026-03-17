@@ -38,8 +38,8 @@ export const useWebhookStore = create<WebhookStore>((set, get) => ({
   selectWebhook: (event) => set({ selectedWebhook: event }),
 
   addWebhook: (event) => set((state) => {
-    // Deduplicate — skip if a webhook with this id already exists
-    if (state.webhooks.some((w) => w.id === event.id)) {
+    // Deduplicate — skip if a webhook with this id or _id already exists
+    if (state.webhooks.some((w) => w.id === event.id || w._id === event._id)) {
       return state;
     }
     const newWebhooks = [event, ...state.webhooks].slice(0, state.filters.limit);

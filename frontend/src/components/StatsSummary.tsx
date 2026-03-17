@@ -30,15 +30,15 @@ export function StatsSummary({ type }: { type: EventType }) {
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-5 p-5 bg-white dark:bg-[#0f0f0f] border-b border-slate-200 dark:border-white/5 shrink-0 z-10">
+    <div className="grid grid-cols-4 gap-4 p-4 bg-white dark:bg-[#0f0f0f] border-b border-slate-200 dark:border-white/5 shrink-0 z-10">
       {stats.map((stat) => (
         <StatCard
           key={stat.label}
           label={stat.label}
           value={stat.value}
           icon={
-            <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-md flex items-center justify-center`}>
-              <stat.Icon size={20} />
+            <div className={`w-8 h-8 ${stat.bg} ${stat.color} rounded-md flex items-center justify-center`}>
+              <stat.Icon size={16} />
             </div>
           }
         />
@@ -57,10 +57,12 @@ function StatCard({
   value: string | number;
 }) {
   return (
-    <div className="group bg-white dark:bg-[#0f0f0f] border border-slate-200 dark:border-white/5 p-5 rounded-xl shadow-sm hover:shadow-md transition-all">
-      <div className="mb-4">{icon}</div>
-      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{label}</p>
-      <p className="text-2xl font-bold text-slate-900 dark:text-slate-50 mt-1">{value}</p>
+    <div className="group bg-white dark:bg-[#0f0f0f] border border-slate-200 dark:border-white/5 p-3 rounded-lg shadow-sm hover:shadow-md transition-all flex items-center gap-3">
+      <div className="shrink-0">{icon}</div>
+      <div className="flex flex-col overflow-hidden">
+        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest truncate">{label}</p>
+        <p className="text-xl font-bold text-slate-900 dark:text-slate-50 mt-0.5 truncate">{value}</p>
+      </div>
     </div>
   );
 }
